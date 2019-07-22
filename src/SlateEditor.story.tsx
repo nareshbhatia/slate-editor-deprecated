@@ -2,10 +2,10 @@ import React, { Fragment, useState } from 'react';
 import Box from '@material-ui/core/Box';
 import { HtmlView } from '@nareshbhatia/react-force';
 import { storiesOf } from '@storybook/react';
-import { Value } from 'slate';
 import { StoryDecorator } from './stories';
 import { htmlSerializer } from './HtmlSerializer';
 import { SlateEditor } from './SlateEditor';
+import { Value } from 'types';
 
 const htmlContent = `
 <h1>Headline 1</h1>

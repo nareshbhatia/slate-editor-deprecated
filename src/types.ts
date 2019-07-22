@@ -1,3 +1,5 @@
+export { Value } from 'slate';
+
 export type BlockTag =
     | 'blockquote'
     | 'h1'
