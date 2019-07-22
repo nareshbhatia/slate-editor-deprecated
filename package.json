@@ -1,0 +1,180 @@
+{
+  "name": "@nareshbhatia/slate-editor",
+  "description": "A pre-packaged editor built on top of Slate",
+  "version": "0.0.0-development",
+  "author": "Naresh Bhatia",
+  "license": "MIT",
+  "homepage": "https://github.com/nareshbhatia/slate-editor",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nareshbhatia/slate-editor.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "material-ui",
+    "react",
+    "slate"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/types/index.d.ts",
+  "files": [
+    "src/",
+    "dist/"
+  ],
+  "scripts": {
+    "build": "yarn lint && yarn build-src && yarn build-declaration",
+    "build-src": "babel src --out-dir dist --extensions \".ts,.tsx\" --source-maps",
+    "build-declaration": "tsc --emitDeclarationOnly",
+    "build-storybook": "build-storybook",
+    "cz-commit": "git-cz",
+    "format": "prettier --write README.md 'src/**/*.ts*'",
+    "lint": "eslint 'src/**/*.ts*'",
+    "prebuild": "rimraf dist",
+    "report-coverage": "cat ./coverage/lcov.info | coveralls",
+    "semantic-release": "semantic-release",
+    "storybook": "start-storybook -p 6006",
+    "test": "jest",
+    "test:prod": "jest --coverage --no-cache",
+    "test:watch": "jest --watch"
+  },
+  "peerDependencies": {
+    "@material-ui/core": "^4.x",
+    "@material-ui/icons": "^4.x",
+    "classnames": "^2.x",
+    "immutable": "^4.x",
+    "react": "^16.x",
+    "slate": "^0.x",
+    "slate-html-serializer": "^0.x",
+    "slate-react": "^0.x"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.3.3",
+    "@commitlint/cli": "^8.0.0",
+    "@commitlint/config-conventional": "^8.0.0",
+    "@material-ui/core": "^4.2.1",
+    "@material-ui/icons": "^4.2.1",
+    "@nareshbhatia/react-force": "^1.12.0",
+    "@storybook/addon-actions": "^5.1.9",
+    "@storybook/addon-console": "^1.2.1",
+    "@storybook/addon-links": "^5.1.9",
+    "@storybook/addons": "^5.1.9",
+    "@storybook/react": "^5.1.9",
+    "@testing-library/jest-dom": "^4.0.0",
+    "@testing-library/react": "^8.0.5",
+    "@types/classnames": "^2.2.9",
+    "@types/jest": "^24.0.15",
+    "@types/node": "^12.6.8",
+    "@types/react": "^16.8.23",
+    "@types/react-dom": "^16.8.3",
+    "@types/slate": "^0.44.12",
+    "@types/slate-html-serializer": "^0.6.3",
+    "@types/slate-react": "^0.22.4",
+    "@types/storybook__react": "^4.0.2",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
+    "babel-eslint": "^10.0.2",
+    "babel-jest": "^24.8.0",
+    "babel-loader": "^8.0.6",
+    "classnames": "^2.2.6",
+    "colors": "^1.3.3",
+    "commitizen": "^4.0.3",
+    "coveralls": "^3.0.5",
+    "cz-conventional-changelog": "^3.0.2",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-config-react-app": "^4.0.1",
+    "eslint-plugin-flowtype": "^3.12.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.2",
+    "eslint-plugin-react-hooks": "^1.6.1",
+    "glob-loader": "^0.3.0",
+    "husky": "^3.0.1",
+    "immutable": "^4.0.0-rc.12",
+    "jest": "^24.5.0",
+    "prettier": "^1.18.2",
+    "pretty-quick": "^1.11.1",
+    "prompt": "^1.0.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-test-renderer": "^16.8.6",
+    "rimraf": "^2.6.3",
+    "semantic-release": "^15.13.18",
+    "slate": "^0.47.4",
+    "slate-html-serializer": "^0.8.6",
+    "slate-react": "^0.22.4",
+    "typescript": "^3.5.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  },
+  "release": {
+    "analyzeCommits": {
+      "preset": "angular",
+      "releaseRules": [
+        {
+          "type": "docs",
+          "scope": "README",
+          "release": "patch"
+        },
+        {
+          "type": "refactor",
+          "release": "patch"
+        },
+        {
+          "type": "style",
+          "release": "patch"
+        }
+      ]
+    }
+  },
+  "jest": {
+    "verbose": true,
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "testRegex": "(\\.(test|spec))\\.(ts|tsx)$",
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "setupFilesAfterEnv": [
+      "./src/test/setupTestsAfterEnv.ts"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 70,
+        "lines": 80,
+        "statements": 80
+      }
+    }
+  }
+}
