@@ -3,9 +3,7 @@ import Box from '@material-ui/core/Box';
 import { HtmlView } from '@nareshbhatia/react-force';
 import { storiesOf } from '@storybook/react';
 import { StoryDecorator } from './stories';
-import { htmlSerializer } from './HtmlSerializer';
-import { SlateEditor } from './SlateEditor';
-import { Value } from 'types';
+import { htmlSerializer, SlateEditor, Value } from '.';
 
 const htmlContent = `
 <h1>Headline 1</h1>
