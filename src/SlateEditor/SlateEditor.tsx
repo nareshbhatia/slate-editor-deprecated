@@ -1,5 +1,5 @@
 import React from 'react';
-import { Editor as CoreEditor, Value } from 'slate';
+import { Editor as CoreEditor } from 'slate';
 import {
     Editor,
     EditorProps,
@@ -9,13 +9,7 @@ import {
 } from 'slate-react';
 import { BlockType, InlineType, MarkType } from '../types';
 
-export interface SlateEditorProps {
-    onChange?: (change: { value: Value }) => any;
-    placeholder?: string;
-    value: Value;
-}
-
-export const SlateEditor = ({ ...rest }: SlateEditorProps) => {
+export const SlateEditor = (props: EditorProps) => {
     const renderEditor = (
         props: EditorProps,
         editor: CoreEditor,
@@ -122,7 +116,7 @@ export const SlateEditor = ({ ...rest }: SlateEditorProps) => {
             renderBlock={renderBlock}
             renderInline={renderInline}
             renderMark={renderMark}
-            {...rest}
+            {...props}
         />
     );
 };
