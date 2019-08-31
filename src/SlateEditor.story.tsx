@@ -21,7 +21,6 @@ const htmlContent = `
 <p><strong>Bold</strong><br />
 <em>Italic</em><br />
 <u>Underline</u><br />
-<s>Strikethrough</s><br />
 <code>Code</code>
 </p>
 

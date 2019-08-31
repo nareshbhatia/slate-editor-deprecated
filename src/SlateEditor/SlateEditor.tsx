@@ -8,6 +8,7 @@ import {
     RenderMarkProps
 } from 'slate-react';
 import { BlockType, InlineType, MarkType } from '../types';
+import { HoverMenu } from './HoverMenu';
 
 export const SlateEditor = (props: EditorProps) => {
     const renderEditor = (
@@ -16,7 +17,12 @@ export const SlateEditor = (props: EditorProps) => {
         next: () => any
     ) => {
         const children = next();
-        return <React.Fragment>{children}</React.Fragment>;
+        return (
+            <React.Fragment>
+                {children}
+                <HoverMenu editor={editor} />
+            </React.Fragment>
+        );
     };
 
     const renderBlock = (
