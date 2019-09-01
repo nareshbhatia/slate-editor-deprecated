@@ -11,7 +11,9 @@
 /.vscode
 
 # Misc
+/.firebase
 /coverage
+/storybook-static
 *.log
 *.tgz
 

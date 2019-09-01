@@ -93,4 +93,4 @@ const SlateContainer = () => {
 
 storiesOf('Slate Editor', module)
     .addDecorator(StoryDecorator)
-    .add('default', () => <SlateContainer />);
+    .add('Example', () => <SlateContainer />);

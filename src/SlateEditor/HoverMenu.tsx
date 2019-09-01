@@ -1,18 +1,35 @@
-import React, { useEffect } from 'react';
-import Popper, { PopperProps } from '@material-ui/core/Popper';
+import React, { FormEvent, useEffect } from 'react';
 import Fade from '@material-ui/core/Fade';
+import Paper from '@material-ui/core/Paper';
+import Popper, { PopperProps } from '@material-ui/core/Popper';
+import { createMuiTheme, Theme } from '@material-ui/core/styles';
 import CodeIcon from '@material-ui/icons/Code';
 import FormatBoldIcon from '@material-ui/icons/FormatBold';
 import FormatItalicIcon from '@material-ui/icons/FormatItalic';
 import FormatUnderlinedIcon from '@material-ui/icons/FormatUnderlined';
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import { makeStyles, ThemeProvider } from '@material-ui/styles';
 import { Editor as CoreEditor } from 'slate';
-import { Menu, MenuButton } from '../Menu';
+
+// Dark theme for the menu
+const menuTheme = createMuiTheme({
+    palette: {
+        type: 'dark'
+    }
+});
+
+const useStyles = makeStyles((theme: Theme) => ({
+    paper: {
+        margin: '4px'
+    }
+}));
 
 export interface HoverMenuProps {
     editor: CoreEditor;
 }
 
 export const HoverMenu = ({ editor }: HoverMenuProps) => {
+    const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState<PopperProps['anchorEl']>(
         null
     );
@@ -45,62 +62,54 @@ export const HoverMenu = ({ editor }: HoverMenuProps) => {
     const open = Boolean(anchorEl);
     const id = open ? 'menu-popper' : undefined;
 
-    const handleMenuClick = (menuAction?: string, menuValue?: any) => {
-        switch (menuAction) {
-            case 'toggleMark':
-                editor.toggleMark(menuValue);
-                break;
-            default:
-                break;
-        }
+    const handleToggleMark = (event: FormEvent<HTMLButtonElement>) => {
+        editor.toggleMark(event.currentTarget.value);
     };
 
     return (
-        <Popper
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            placement="top"
-            transition
-        >
-            {({ TransitionProps }) => (
-                <Fade {...TransitionProps} timeout={350}>
-                    <Menu>
-                        <MenuButton
-                            isActive={isActive('bold')}
-                            menuAction="toggleMark"
-                            menuValue="bold"
-                            onMenuClick={handleMenuClick}
-                        >
-                            <FormatBoldIcon />
-                        </MenuButton>
-                        <MenuButton
-                            isActive={isActive('italic')}
-                            menuAction="toggleMark"
-                            menuValue="italic"
-                            onMenuClick={handleMenuClick}
-                        >
-                            <FormatItalicIcon />
-                        </MenuButton>
-                        <MenuButton
-                            isActive={isActive('underline')}
-                            menuAction="toggleMark"
-                            menuValue="underline"
-                            onMenuClick={handleMenuClick}
-                        >
-                            <FormatUnderlinedIcon />
-                        </MenuButton>
-                        <MenuButton
-                            isActive={isActive('code')}
-                            menuAction="toggleMark"
-                            menuValue="code"
-                            onMenuClick={handleMenuClick}
-                        >
-                            <CodeIcon />
-                        </MenuButton>
-                    </Menu>
-                </Fade>
-            )}
-        </Popper>
+        <ThemeProvider theme={menuTheme}>
+            <Popper
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                placement="top"
+                transition
+            >
+                {({ TransitionProps }) => (
+                    <Fade {...TransitionProps} timeout={350}>
+                        <Paper className={classes.paper}>
+                            <ToggleButton
+                                value="bold"
+                                selected={isActive('bold')}
+                                onChange={handleToggleMark}
+                            >
+                                <FormatBoldIcon />
+                            </ToggleButton>
+                            <ToggleButton
+                                value="italic"
+                                selected={isActive('italic')}
+                                onChange={handleToggleMark}
+                            >
+                                <FormatItalicIcon />
+                            </ToggleButton>
+                            <ToggleButton
+                                value="underline"
+                                selected={isActive('underline')}
+                                onChange={handleToggleMark}
+                            >
+                                <FormatUnderlinedIcon />
+                            </ToggleButton>
+                            <ToggleButton
+                                value="code"
+                                selected={isActive('code')}
+                                onChange={handleToggleMark}
+                            >
+                                <CodeIcon />
+                            </ToggleButton>
+                        </Paper>
+                    </Fade>
+                )}
+            </Popper>
+        </ThemeProvider>
     );
 };
