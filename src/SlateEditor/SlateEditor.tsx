@@ -77,8 +77,7 @@ export const SlateEditor = (props: EditorProps) => {
 
         switch (inlineType) {
             case 'anchor':
-                const { data } = node;
-                const href = data.get('href');
+                const href = node.data.get('href');
                 return (
                     <a href={href} {...attributes}>
                         {children}
@@ -86,7 +85,7 @@ export const SlateEditor = (props: EditorProps) => {
                 );
             case 'image':
                 const src = node.data.get('src');
-                return <img {...attributes} src={src} alt="" />;
+                return <img src={src} alt="" {...attributes} />;
             default:
                 return next();
         }

@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect } from 'react';
+import React, { FormEvent, Fragment, useEffect, useState } from 'react';
 import Fade from '@material-ui/core/Fade';
 import Paper from '@material-ui/core/Paper';
 import Popper, { PopperProps } from '@material-ui/core/Popper';
@@ -7,6 +7,7 @@ import CodeIcon from '@material-ui/icons/Code';
 import FormatBoldIcon from '@material-ui/icons/FormatBold';
 import FormatItalicIcon from '@material-ui/icons/FormatItalic';
 import FormatUnderlinedIcon from '@material-ui/icons/FormatUnderlined';
+import LinkIcon from '@material-ui/icons/Link';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import { makeStyles, ThemeProvider } from '@material-ui/styles';
 import { Editor as CoreEditor } from 'slate';
@@ -24,20 +25,38 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
 }));
 
+const wrapAnchor = (editor: CoreEditor, href: string) => {
+    editor.wrapInline({
+        type: 'anchor',
+        data: { href }
+    });
+
+    editor.moveToEnd();
+};
+
+const unwrapAnchor = (editor: CoreEditor) => {
+    editor.unwrapInline('anchor');
+};
+
+type MenuState = 'normal' | 'enterHref';
+
 export interface HoverMenuProps {
     editor: CoreEditor;
 }
 
 export const HoverMenu = ({ editor }: HoverMenuProps) => {
     const classes = useStyles();
-    const [anchorEl, setAnchorEl] = React.useState<PopperProps['anchorEl']>(
-        null
-    );
+    const [anchorEl, setAnchorEl] = useState<PopperProps['anchorEl']>(null);
+    const [menuState, setMenuState] = useState<MenuState>('normal');
 
     const value = editor.value;
-    const { activeMarks, fragment, selection } = value;
-    const isActive = (markType: string) =>
-        activeMarks.some(mark => mark!.type === markType);
+    const { activeMarks, fragment, inlines, selection } = value;
+
+    const hasMark = (type: string) =>
+        activeMarks.some(mark => mark!.type === type);
+
+    const hasInline = (type: string) =>
+        inlines.some(inline => inline!.type === type);
 
     useEffect(() => {
         if (
@@ -66,6 +85,15 @@ export const HoverMenu = ({ editor }: HoverMenuProps) => {
         editor.toggleMark(event.currentTarget.value);
     };
 
+    const handleAnchorClicked = () => {
+        if (hasInline('anchor')) {
+            unwrapAnchor(editor);
+        } else {
+            wrapAnchor(editor, 'http://archfirst.org');
+            // setMenuState('enterHref');
+        }
+    };
+
     return (
         <ThemeProvider theme={menuTheme}>
             <Popper
@@ -77,36 +105,52 @@ export const HoverMenu = ({ editor }: HoverMenuProps) => {
             >
                 {({ TransitionProps }) => (
                     <Fade {...TransitionProps} timeout={350}>
-                        <Paper className={classes.paper}>
-                            <ToggleButton
-                                value="bold"
-                                selected={isActive('bold')}
-                                onChange={handleToggleMark}
-                            >
-                                <FormatBoldIcon />
-                            </ToggleButton>
-                            <ToggleButton
-                                value="italic"
-                                selected={isActive('italic')}
-                                onChange={handleToggleMark}
-                            >
-                                <FormatItalicIcon />
-                            </ToggleButton>
-                            <ToggleButton
-                                value="underline"
-                                selected={isActive('underline')}
-                                onChange={handleToggleMark}
-                            >
-                                <FormatUnderlinedIcon />
-                            </ToggleButton>
-                            <ToggleButton
-                                value="code"
-                                selected={isActive('code')}
-                                onChange={handleToggleMark}
-                            >
-                                <CodeIcon />
-                            </ToggleButton>
-                        </Paper>
+                        <Fragment>
+                            {menuState === 'normal' && (
+                                <Paper className={classes.paper}>
+                                    <ToggleButton
+                                        value="bold"
+                                        selected={hasMark('bold')}
+                                        onChange={handleToggleMark}
+                                    >
+                                        <FormatBoldIcon />
+                                    </ToggleButton>
+                                    <ToggleButton
+                                        value="italic"
+                                        selected={hasMark('italic')}
+                                        onChange={handleToggleMark}
+                                    >
+                                        <FormatItalicIcon />
+                                    </ToggleButton>
+                                    <ToggleButton
+                                        value="underline"
+                                        selected={hasMark('underline')}
+                                        onChange={handleToggleMark}
+                                    >
+                                        <FormatUnderlinedIcon />
+                                    </ToggleButton>
+                                    <ToggleButton
+                                        value="code"
+                                        selected={hasMark('code')}
+                                        onChange={handleToggleMark}
+                                    >
+                                        <CodeIcon />
+                                    </ToggleButton>
+                                    <ToggleButton
+                                        value="anchor"
+                                        selected={hasInline('anchor')}
+                                        onChange={handleAnchorClicked}
+                                    >
+                                        <LinkIcon />
+                                    </ToggleButton>
+                                </Paper>
+                            )}
+                            {menuState === 'enterHref' && (
+                                <Paper className={classes.paper}>
+                                    Enter href
+                                </Paper>
+                            )}
+                        </Fragment>
                     </Fade>
                 )}
             </Popper>
