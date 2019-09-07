@@ -82,6 +82,11 @@ export const HoverMenu = ({ editor }: HoverMenuProps) => {
     const id = open ? 'menu-popper' : undefined;
 
     const handleToggleMark = (event: FormEvent<HTMLButtonElement>) => {
+        // preventDefault() makes sure that the selection does not go away
+        // onMouseDown. This makes the menu stick.
+        // Note: Don't use onClick() or onChange(). onMouseDown() is needed
+        // for this mechanism to work.
+        event.preventDefault();
         editor.toggleMark(event.currentTarget.value);
     };
 
@@ -111,35 +116,35 @@ export const HoverMenu = ({ editor }: HoverMenuProps) => {
                                     <ToggleButton
                                         value="bold"
                                         selected={hasMark('bold')}
-                                        onChange={handleToggleMark}
+                                        onMouseDown={handleToggleMark}
                                     >
                                         <FormatBoldIcon />
                                     </ToggleButton>
                                     <ToggleButton
                                         value="italic"
                                         selected={hasMark('italic')}
-                                        onChange={handleToggleMark}
+                                        onMouseDown={handleToggleMark}
                                     >
                                         <FormatItalicIcon />
                                     </ToggleButton>
                                     <ToggleButton
                                         value="underline"
                                         selected={hasMark('underline')}
-                                        onChange={handleToggleMark}
+                                        onMouseDown={handleToggleMark}
                                     >
                                         <FormatUnderlinedIcon />
                                     </ToggleButton>
                                     <ToggleButton
                                         value="code"
                                         selected={hasMark('code')}
-                                        onChange={handleToggleMark}
+                                        onMouseDown={handleToggleMark}
                                     >
                                         <CodeIcon />
                                     </ToggleButton>
                                     <ToggleButton
                                         value="anchor"
                                         selected={hasInline('anchor')}
-                                        onChange={handleAnchorClicked}
+                                        onMouseDown={handleAnchorClicked}
                                     >
                                         <LinkIcon />
                                     </ToggleButton>
