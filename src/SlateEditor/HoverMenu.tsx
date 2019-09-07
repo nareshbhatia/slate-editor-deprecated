@@ -39,7 +39,7 @@ const unwrapAnchor = (editor: CoreEditor) => {
     editor.unwrapInline('anchor');
 };
 
-type MenuState = 'normal' | 'enterHref';
+type MenuState = 'initial' | 'enterHref';
 
 export interface HoverMenuProps {
     editor: CoreEditor;
@@ -48,7 +48,7 @@ export interface HoverMenuProps {
 export const HoverMenu = ({ editor }: HoverMenuProps) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState<PopperProps['anchorEl']>(null);
-    const [menuState, setMenuState] = useState<MenuState>('normal');
+    const [menuState, setMenuState] = useState<MenuState>('initial');
     const [href, setHref] = useState('');
 
     const value = editor.value;
@@ -78,6 +78,7 @@ export const HoverMenu = ({ editor }: HoverMenuProps) => {
             clientHeight: rect.height,
             getBoundingClientRect: () => range.getBoundingClientRect()
         });
+        setMenuState('initial');
     }, [selection.isBlurred, selection.isCollapsed, fragment.text]);
 
     const open = Boolean(anchorEl);
@@ -104,7 +105,7 @@ export const HoverMenu = ({ editor }: HoverMenuProps) => {
     const handleHrefChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
         setHref(event.target.value);
         // wrapAnchor(editor, 'http://archfirst.org');
-        // setMenuState('normal');
+        // setMenuState('initial');
     };
 
     return (
@@ -119,7 +120,7 @@ export const HoverMenu = ({ editor }: HoverMenuProps) => {
                 {({ TransitionProps }) => (
                     <Fade {...TransitionProps} timeout={350}>
                         <Fragment>
-                            {menuState === 'normal' && (
+                            {menuState === 'initial' && (
                                 <Paper className={classes.paper}>
                                     <ToggleButton
                                         value="bold"
