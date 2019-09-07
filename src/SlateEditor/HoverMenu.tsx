@@ -3,6 +3,7 @@ import Fade from '@material-ui/core/Fade';
 import Paper from '@material-ui/core/Paper';
 import Popper, { PopperProps } from '@material-ui/core/Popper';
 import { createMuiTheme, Theme } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
 import CodeIcon from '@material-ui/icons/Code';
 import FormatBoldIcon from '@material-ui/icons/FormatBold';
 import FormatItalicIcon from '@material-ui/icons/FormatItalic';
@@ -48,6 +49,7 @@ export const HoverMenu = ({ editor }: HoverMenuProps) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState<PopperProps['anchorEl']>(null);
     const [menuState, setMenuState] = useState<MenuState>('normal');
+    const [href, setHref] = useState('');
 
     const value = editor.value;
     const { activeMarks, fragment, inlines, selection } = value;
@@ -90,13 +92,19 @@ export const HoverMenu = ({ editor }: HoverMenuProps) => {
         editor.toggleMark(event.currentTarget.value);
     };
 
-    const handleAnchorClicked = () => {
+    const handleAnchorClicked = (event: FormEvent<HTMLButtonElement>) => {
         if (hasInline('anchor')) {
             unwrapAnchor(editor);
         } else {
-            wrapAnchor(editor, 'http://archfirst.org');
-            // setMenuState('enterHref');
+            event.preventDefault();
+            setMenuState('enterHref');
         }
+    };
+
+    const handleHrefChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setHref(event.target.value);
+        // wrapAnchor(editor, 'http://archfirst.org');
+        // setMenuState('normal');
     };
 
     return (
@@ -152,7 +160,11 @@ export const HoverMenu = ({ editor }: HoverMenuProps) => {
                             )}
                             {menuState === 'enterHref' && (
                                 <Paper className={classes.paper}>
-                                    Enter href
+                                    <TextField
+                                        value={href}
+                                        onChange={handleHrefChanged}
+                                        variant="outlined"
+                                    />
                                 </Paper>
                             )}
                         </Fragment>
