@@ -16,7 +16,10 @@ import { Editor as CoreEditor } from 'slate';
 // Dark theme for the menu
 const menuTheme = createMuiTheme({
     palette: {
-        type: 'dark'
+        type: 'dark',
+        background: {
+            paper: '#303030'
+        }
     }
 });
 
