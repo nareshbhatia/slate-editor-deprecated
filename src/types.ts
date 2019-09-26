@@ -30,7 +30,7 @@ export type BlockType =
 
 export type InlineTag = 'a' | 'img';
 
-export type InlineType = 'anchor' | 'image';
+export type InlineType = 'link' | 'image';
 
 export type MarkTag = 'strong' | 'code' | 'em' | 's' | 'u';
 

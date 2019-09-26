@@ -76,7 +76,7 @@ export const SlateEditor = (props: EditorProps) => {
         const inlineType: InlineType = node.type as InlineType;
 
         switch (inlineType) {
-            case 'anchor':
+            case 'link':
                 const href = node.data.get('href');
                 return (
                     <a href={href} {...attributes}>

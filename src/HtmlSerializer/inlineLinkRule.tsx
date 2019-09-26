@@ -2,7 +2,7 @@ import React from 'react';
 import { Rule } from 'slate-html-serializer';
 import { InlineTag, InlineType } from '../types';
 
-export const inlineAnchorRule = (
+export const inlineLinkRule = (
     tag: InlineTag,
     inlineType: InlineType
 ): Rule => {

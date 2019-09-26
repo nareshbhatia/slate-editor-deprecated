@@ -1,7 +1,7 @@
 import { Rule } from 'slate-html-serializer';
 import { blockPreRule } from './blockPreRule';
 import { blockRule } from './blockRule';
-import { inlineAnchorRule } from './inlineAnchorRule';
+import { inlineLinkRule } from './inlineLinkRule';
 import { inlineImageRule } from './inlineImageRule';
 import { markRule } from './markRule';
 
@@ -18,7 +18,7 @@ export const rules: Rule[] = [
     blockRule('p', 'paragraph'),
     blockPreRule('pre', 'pre'),
     blockRule('ul', 'unordered-list'),
-    inlineAnchorRule('a', 'anchor'),
+    inlineLinkRule('a', 'link'),
     inlineImageRule('img', 'image'),
     markRule('strong', 'bold'),
     markRule('code', 'code'),
