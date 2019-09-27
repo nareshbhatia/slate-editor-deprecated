@@ -1,9 +1,9 @@
 import React, { FormEvent, Fragment, useEffect, useState } from 'react';
 import Fade from '@material-ui/core/Fade';
+import Input from '@material-ui/core/Input';
 import Paper from '@material-ui/core/Paper';
 import Popper, { PopperProps } from '@material-ui/core/Popper';
 import { createMuiTheme, Theme } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import CodeIcon from '@material-ui/icons/Code';
 import FormatBoldIcon from '@material-ui/icons/FormatBold';
 import FormatItalicIcon from '@material-ui/icons/FormatItalic';
@@ -26,6 +26,10 @@ const menuTheme = createMuiTheme({
 const useStyles = makeStyles((theme: Theme) => ({
     paper: {
         margin: '4px'
+    },
+    input: {
+        padding: theme.spacing(1),
+        width: 250
     }
 }));
 
@@ -208,11 +212,13 @@ export const HoverMenu = ({ editor }: HoverMenuProps) => {
                             )}
                             {menuState.substate === 'editLink' && (
                                 <Paper className={classes.paper}>
-                                    <TextField
+                                    <Input
+                                        className={classes.input}
                                         value={menuState.linkHref}
                                         onChange={handleHrefChanged}
                                         onKeyDown={handleHrefKeyDown}
-                                        variant="outlined"
+                                        autoFocus
+                                        disableUnderline
                                     />
                                 </Paper>
                             )}

@@ -77,6 +77,7 @@ export const SlateEditor = (props: EditorProps) => {
 
         switch (inlineType) {
             case 'link':
+                // TODO: How to add target="_blank"
                 const href = node.data.get('href');
                 return (
                     <a href={href} {...attributes}>
