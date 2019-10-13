@@ -7,11 +7,16 @@ import { createMuiTheme, Theme } from '@material-ui/core/styles';
 import CodeIcon from '@material-ui/icons/Code';
 import FormatBoldIcon from '@material-ui/icons/FormatBold';
 import FormatItalicIcon from '@material-ui/icons/FormatItalic';
+import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
+import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
+import FormatQuoteIcon from '@material-ui/icons/FormatQuote';
 import FormatUnderlinedIcon from '@material-ui/icons/FormatUnderlined';
 import LinkIcon from '@material-ui/icons/Link';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import { makeStyles, ThemeProvider } from '@material-ui/styles';
 import { Editor as CoreEditor, Selection } from 'slate';
+import { Heading1Icon, Heading2Icon } from '../Icons';
+import { BlockType } from '../types';
 
 // Dark theme for the menu
 const menuTheme = createMuiTheme({
@@ -29,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     input: {
         padding: theme.spacing(1),
-        width: 250
+        width: 300
     }
 }));
 
@@ -71,7 +76,14 @@ export const HoverMenu = ({ editor }: HoverMenuProps) => {
     const [menuState, setMenuState] = useState<MenuState>(noSelectionState);
 
     const value = editor.value;
-    const { activeMarks, fragment, inlines, selection } = value;
+    const {
+        activeMarks,
+        document,
+        blocks,
+        fragment,
+        inlines,
+        selection
+    } = value;
 
     const computeAnchorEl = () => {
         const native = window.getSelection();
@@ -113,6 +125,17 @@ export const HoverMenu = ({ editor }: HoverMenuProps) => {
     const hasInline = (type: string) =>
         inlines.some(inline => inline!.type === type);
 
+    const hasBlock = (type: string) => blocks.some(node => node!.type === type);
+
+    // Is the parent of the current block an ordered-list or unordered-list
+    const hasListBlock = (type: string) => {
+        if (blocks.size > 0) {
+            const parent: any = document.getParent(blocks.first().key);
+            return hasBlock('list-item') && parent && parent.type === type;
+        }
+        return false;
+    };
+
     const handleToggleMark = (event: FormEvent<HTMLButtonElement>) => {
         // preventDefault() makes sure that the selection does not go away
         // onMouseDown. This makes the menu stick.
@@ -120,6 +143,83 @@ export const HoverMenu = ({ editor }: HoverMenuProps) => {
         // for this mechanism to work.
         event.preventDefault();
         editor.toggleMark(event.currentTarget.value);
+    };
+
+    // For blocks 'heading-five', 'heading-six' and 'blockquote'
+    const handleToggleBlock = (
+        event: FormEvent<HTMLButtonElement>,
+        type: BlockType
+    ) => {
+        event.preventDefault();
+
+        const isActive = hasBlock(type);
+        const isList = hasBlock('list-item');
+
+        if (isList) {
+            editor
+                .setBlocks(isActive ? 'paragraph' : type)
+                .unwrapBlock('unordered-list')
+                .unwrapBlock('ordered-list');
+        } else {
+            editor.setBlocks(isActive ? 'paragraph' : type);
+        }
+    };
+
+    // For blocks 'ordered-list' and 'unordered-list'
+    const handleToggleListBlock = (
+        event: FormEvent<HTMLButtonElement>,
+        type: BlockType
+    ) => {
+        event.preventDefault();
+
+        const isList = hasBlock('list-item');
+        const isType = blocks.some(block => {
+            return !!document.getClosest(
+                block!.key,
+                (parent: any) => parent.type === type
+            );
+        });
+
+        if (isList && isType) {
+            editor
+                .setBlocks('paragraph')
+                .unwrapBlock('unordered-list')
+                .unwrapBlock('ordered-list');
+        } else if (isList) {
+            editor
+                .unwrapBlock(
+                    type === 'unordered-list'
+                        ? 'ordered-list'
+                        : 'unordered-list'
+                )
+                .wrapBlock(type);
+        } else {
+            editor.setBlocks('list-item').wrapBlock(type);
+        }
+    };
+
+    const handleToggleH5Block = (event: FormEvent<HTMLButtonElement>) => {
+        handleToggleBlock(event, 'heading-five');
+    };
+
+    const handleToggleH6Block = (event: FormEvent<HTMLButtonElement>) => {
+        handleToggleBlock(event, 'heading-six');
+    };
+
+    const handleToggleQuoteBlock = (event: FormEvent<HTMLButtonElement>) => {
+        handleToggleBlock(event, 'blockquote');
+    };
+
+    const handleToggleOrderedListBlock = (
+        event: FormEvent<HTMLButtonElement>
+    ) => {
+        handleToggleListBlock(event, 'ordered-list');
+    };
+
+    const handleToggleUnorderedListBlock = (
+        event: FormEvent<HTMLButtonElement>
+    ) => {
+        handleToggleListBlock(event, 'unordered-list');
     };
 
     const handleLinkClicked = (event: FormEvent<HTMLButtonElement>) => {
@@ -208,6 +308,48 @@ export const HoverMenu = ({ editor }: HoverMenuProps) => {
                                     >
                                         <LinkIcon />
                                     </ToggleButton>
+                                    <ToggleButton
+                                        value="heading-five"
+                                        selected={hasBlock('heading-five')}
+                                        onMouseDown={handleToggleH5Block}
+                                    >
+                                        <Heading1Icon />
+                                    </ToggleButton>
+                                    <ToggleButton
+                                        value="heading-six"
+                                        selected={hasBlock('heading-six')}
+                                        onMouseDown={handleToggleH6Block}
+                                    >
+                                        <Heading2Icon />
+                                    </ToggleButton>
+                                    <ToggleButton
+                                        value="blockquote"
+                                        selected={hasBlock('blockquote')}
+                                        onMouseDown={handleToggleQuoteBlock}
+                                    >
+                                        <FormatQuoteIcon />
+                                    </ToggleButton>
+
+                                    <ToggleButton
+                                        value="unordered-list"
+                                        selected={hasListBlock(
+                                            'unordered-list'
+                                        )}
+                                        onMouseDown={
+                                            handleToggleUnorderedListBlock
+                                        }
+                                    >
+                                        <FormatListBulletedIcon />
+                                    </ToggleButton>
+                                    <ToggleButton
+                                        value="ordered-list"
+                                        selected={hasListBlock('ordered-list')}
+                                        onMouseDown={
+                                            handleToggleOrderedListBlock
+                                        }
+                                    >
+                                        <FormatListNumberedIcon />
+                                    </ToggleButton>
                                 </Paper>
                             )}
                             {menuState.substate === 'editLink' && (
@@ -215,6 +357,7 @@ export const HoverMenu = ({ editor }: HoverMenuProps) => {
                                     <Input
                                         className={classes.input}
                                         value={menuState.linkHref}
+                                        placeholder="Paste or type a link..."
                                         onChange={handleHrefChanged}
                                         onKeyDown={handleHrefKeyDown}
                                         autoFocus
