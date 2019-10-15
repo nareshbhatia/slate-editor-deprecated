@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeProvider } from '@material-ui/styles';
+import { ThemeProvider } from '@material-ui/core/styles';
 import { CssBaseline } from '@nareshbhatia/react-force';
 import { theme } from './theme';
 

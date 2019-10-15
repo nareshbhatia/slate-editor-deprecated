@@ -3,7 +3,12 @@ import Fade from '@material-ui/core/Fade';
 import Input from '@material-ui/core/Input';
 import Paper from '@material-ui/core/Paper';
 import Popper, { PopperProps } from '@material-ui/core/Popper';
-import { createMuiTheme, Theme } from '@material-ui/core/styles';
+import {
+    createMuiTheme,
+    makeStyles,
+    Theme,
+    ThemeProvider
+} from '@material-ui/core/styles';
 import CodeIcon from '@material-ui/icons/Code';
 import FormatBoldIcon from '@material-ui/icons/FormatBold';
 import FormatItalicIcon from '@material-ui/icons/FormatItalic';
@@ -13,7 +18,6 @@ import FormatQuoteIcon from '@material-ui/icons/FormatQuote';
 import FormatUnderlinedIcon from '@material-ui/icons/FormatUnderlined';
 import LinkIcon from '@material-ui/icons/Link';
 import ToggleButton from '@material-ui/lab/ToggleButton';
-import { makeStyles, ThemeProvider } from '@material-ui/styles';
 import { Editor as CoreEditor, Selection } from 'slate';
 import { Heading1Icon, Heading2Icon } from '../Icons';
 import { BlockType } from '../types';
