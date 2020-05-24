@@ -1,6 +1,6 @@
 import React from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
-import { CssBaseline } from '@nareshbhatia/react-force';
+import { CssBaseline } from '@react-force/core';
 import { theme } from './theme';
 
 export const StoryDecorator = (story: any) => (

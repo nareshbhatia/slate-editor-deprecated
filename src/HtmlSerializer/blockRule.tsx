@@ -9,7 +9,7 @@ export const blockRule = (tag: BlockTag, blockType: BlockType): Rule => {
                 return {
                     object: 'block',
                     type: blockType,
-                    nodes: next(el.childNodes)
+                    nodes: next(el.childNodes),
                 };
             }
         },
@@ -17,6 +17,6 @@ export const blockRule = (tag: BlockTag, blockType: BlockType): Rule => {
             if (obj.object === 'block' && obj.type === blockType) {
                 return React.createElement(tag, {}, children);
             }
-        }
+        },
     };
 };

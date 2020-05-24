@@ -24,5 +24,5 @@ export const rules: Rule[] = [
     markRule('code', 'code'),
     markRule('em', 'italic'),
     markRule('s', 'strikethrough'),
-    markRule('u', 'underline')
+    markRule('u', 'underline'),
 ];

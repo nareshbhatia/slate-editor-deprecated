@@ -9,7 +9,7 @@ export const markRule = (tag: MarkTag, markType: MarkType): Rule => {
                 return {
                     object: 'mark',
                     type: markType,
-                    nodes: next(el.childNodes)
+                    nodes: next(el.childNodes),
                 };
             }
         },
@@ -17,6 +17,6 @@ export const markRule = (tag: MarkTag, markType: MarkType): Rule => {
             if (obj.object === 'mark' && obj.type === markType) {
                 return React.createElement(tag, {}, children);
             }
-        }
+        },
     };
 };

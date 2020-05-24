@@ -15,7 +15,7 @@ export const blockPreRule = (tag: BlockTag, blockType: BlockType): Rule => {
                 return {
                     object: 'block',
                     type: blockType,
-                    nodes: next(childNodes)
+                    nodes: next(childNodes),
                 };
             }
         },
@@ -27,6 +27,6 @@ export const blockPreRule = (tag: BlockTag, blockType: BlockType): Rule => {
                     </pre>
                 );
             }
-        }
+        },
     };
 };

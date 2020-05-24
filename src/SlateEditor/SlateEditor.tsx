@@ -5,7 +5,7 @@ import {
     EditorProps,
     RenderBlockProps,
     RenderInlineProps,
-    RenderMarkProps
+    RenderMarkProps,
 } from 'slate-react';
 import { BlockType, InlineType, MarkType } from '../types';
 import { HoverMenu } from './HoverMenu';

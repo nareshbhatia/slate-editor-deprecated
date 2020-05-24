@@ -13,8 +13,8 @@ export const inlineImageRule = (
                     object: 'inline',
                     type: inlineType,
                     data: {
-                        src: el.getAttribute('src')
-                    }
+                        src: el.getAttribute('src'),
+                    },
                 };
             }
         },
@@ -24,6 +24,6 @@ export const inlineImageRule = (
 
                 return <img src={src} alt="" />;
             }
-        }
+        },
     };
 };

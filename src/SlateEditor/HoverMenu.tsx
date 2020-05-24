@@ -7,7 +7,7 @@ import {
     createMuiTheme,
     makeStyles,
     Theme,
-    ThemeProvider
+    ThemeProvider,
 } from '@material-ui/core/styles';
 import CodeIcon from '@material-ui/icons/Code';
 import FormatBoldIcon from '@material-ui/icons/FormatBold';
@@ -27,25 +27,25 @@ const menuTheme = createMuiTheme({
     palette: {
         type: 'dark',
         background: {
-            paper: '#303030'
-        }
-    }
+            paper: '#303030',
+        },
+    },
 });
 
 const useStyles = makeStyles((theme: Theme) => ({
     paper: {
-        margin: '4px'
+        margin: '4px',
     },
     input: {
         padding: theme.spacing(1),
-        width: 300
-    }
+        width: 300,
+    },
 }));
 
 const wrapLink = (editor: CoreEditor, selection: Selection, href: string) => {
     editor.wrapInlineAtRange(selection, {
         type: 'link',
-        data: { href }
+        data: { href },
     });
 
     editor.moveToEnd();
@@ -72,7 +72,7 @@ const noSelectionState: MenuState = {
     substate: 'noSelection',
     anchorEl: null,
     linkSelection: null,
-    linkHref: ''
+    linkHref: '',
 };
 
 export const HoverMenu = ({ editor }: HoverMenuProps) => {
@@ -86,7 +86,7 @@ export const HoverMenu = ({ editor }: HoverMenuProps) => {
         blocks,
         fragment,
         inlines,
-        selection
+        selection,
     } = value;
 
     const computeAnchorEl = () => {
@@ -96,7 +96,7 @@ export const HoverMenu = ({ editor }: HoverMenuProps) => {
         return {
             clientWidth: rect.width,
             clientHeight: rect.height,
-            getBoundingClientRect: () => range.getBoundingClientRect()
+            getBoundingClientRect: () => range.getBoundingClientRect(),
         };
     };
 
@@ -111,7 +111,7 @@ export const HoverMenu = ({ editor }: HoverMenuProps) => {
                 substate: 'selection',
                 anchorEl: computeAnchorEl(),
                 linkSelection: null,
-                linkHref: ''
+                linkHref: '',
             });
         } else if (menuState.substate === 'selection' && noSelection) {
             setMenuState(noSelectionState);
@@ -120,16 +120,17 @@ export const HoverMenu = ({ editor }: HoverMenuProps) => {
         menuState.substate,
         selection.isBlurred,
         selection.isCollapsed,
-        fragment.text
+        fragment.text,
     ]);
 
     const hasMark = (type: string) =>
-        activeMarks.some(mark => mark!.type === type);
+        activeMarks.some((mark) => mark!.type === type);
 
     const hasInline = (type: string) =>
-        inlines.some(inline => inline!.type === type);
+        inlines.some((inline) => inline!.type === type);
 
-    const hasBlock = (type: string) => blocks.some(node => node!.type === type);
+    const hasBlock = (type: string) =>
+        blocks.some((node) => node!.type === type);
 
     // Is the parent of the current block an ordered-list or unordered-list
     const hasListBlock = (type: string) => {
@@ -177,7 +178,7 @@ export const HoverMenu = ({ editor }: HoverMenuProps) => {
         event.preventDefault();
 
         const isList = hasBlock('list-item');
-        const isType = blocks.some(block => {
+        const isType = blocks.some((block) => {
             return !!document.getClosest(
                 block!.key,
                 (parent: any) => parent.type === type
@@ -235,7 +236,7 @@ export const HoverMenu = ({ editor }: HoverMenuProps) => {
                 substate: 'editLink',
                 anchorEl: menuState.anchorEl,
                 linkSelection: selection,
-                linkHref: ''
+                linkHref: '',
             });
         }
     };
@@ -244,7 +245,7 @@ export const HoverMenu = ({ editor }: HoverMenuProps) => {
         const { linkHref, ...rest } = menuState;
         setMenuState({
             linkHref: event.target.value,
-            ...rest
+            ...rest,
         });
     };
 

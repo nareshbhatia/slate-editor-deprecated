@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import Box from '@material-ui/core/Box';
-import { HtmlView } from '@nareshbhatia/react-force';
+import { HtmlView } from '@react-force/core';
 import { storiesOf } from '@storybook/react';
 import { StoryDecorator } from './stories';
 import { htmlSerializer, SlateEditor, Value } from '.';

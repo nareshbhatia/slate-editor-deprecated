@@ -14,8 +14,8 @@ export const inlineLinkRule = (
                     type: inlineType,
                     nodes: next(el.childNodes),
                     data: {
-                        href: el.getAttribute('href')
-                    }
+                        href: el.getAttribute('href'),
+                    },
                 };
             }
         },
@@ -25,6 +25,6 @@ export const inlineLinkRule = (
 
                 return <a href={href}>{children}</a>;
             }
-        }
+        },
     };
 };
